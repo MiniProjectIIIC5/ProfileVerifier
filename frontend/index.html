@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Verification System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1>🔍 Profile Verifier</h1>
+            <p>Detect fake profiles on Instagram, LinkedIn & more</p>
+        </header>
+
+        <!-- TABS NAVIGATION -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="verify">Verify Profile</button>
+            <button class="tab-btn" data-tab="history">History</button>
+        </nav>
+
+        <!-- ==================== DASHBOARD TAB ==================== -->
+        <section id="dashboard" class="tab-content active">
+            <div class="dashboard-container">
+                <h2>Today's Activity</h2>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-total">0</div>
+                        <div class="stat-label">Verifications</div>
+                    </div>
+                    <div class="stat-card fake">
+                        <div class="stat-number" id="stat-fake">0</div>
+                        <div class="stat-label">Fake Detected</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-reports">0</div>
+                        <div class="stat-label">Reports</div>
+                    </div>
+                </div>
+
+                <!-- Platform Selection -->
+                <h3>Quick Verify</h3>
+                <div class="platform-tiles">
+                    <div class="platform-tile" data-platform="instagram">
+                        📷 Instagram
+                    </div>
+                    <div class="platform-tile" data-platform="linkedin">
+                        💼 LinkedIn
+                    </div>
+                    <div class="platform-tile" data-platform="other">
+                        🌐 Other
+                    </div>
+                </div>
+
+                <!-- Quick Form -->
+                <form id="quick-form" class="quick-form" style="display:none;">
+                    <input 
+                        type="url" 
+                        id="quick-url" 
+                        placeholder="Paste profile URL..." 
+                        required
+                    >
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ==================== VERIFY TAB ==================== -->
+        <section id="verify" class="tab-content">
+            <div class="verify-container">
+                <h2>Verify a Profile</h2>
+
+                <!-- Tab: Instagram/Other vs LinkedIn -->
+                <div class="verify-tabs">
+                    <button class="verify-tab active" data-verify="standard">Instagram / Other</button>
+                    <button class="verify-tab" data-verify="linkedin">Image</button>
+                </div>
+
+                <!-- Standard Verification (Instagram/Other) -->
+                <form id="verify-form-standard" class="verify-form active">
+                    <div class="form-group">
+                        <label for="platform-select">Platform</label>
+                        <select id="platform-select" required>
+                            <option value="">Select platform</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-url">Profile URL</label>
+                        <input 
+                            type="url" 
+                            id="profile-url" 
+                            placeholder="https://instagram.com/username" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Verify Profile</button>
+                </form>
+
+                <!-- LinkedIn Verification with Image -->
+                <form id="verify-form-linkedin" class="verify-form" style="display:none;">
+                    <div class="form-group">
+                        <label for="linkedin-url">LinkedIn URL</label>
+                        <input 
+                            type="url" 
+                            id="linkedin-url" 
+                            placeholder="https://linkedin.com/in/username" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-image">Profile Picture (Optional)</label>
+                        <input type="file" id="profile-image" accept="image/*">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Verify Profile</button>
+                </form>
+
+                <!-- Loading Spinner -->
+                <div id="loading" class="loading" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing profile...</p>
+                </div>
+
+                <!-- Result Card -->
+                <div id="result-card" class="result-card" style="display:none;">
+                    <div id="result-content"></div>
+                    <div id="action-buttons" class="action-buttons"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== HISTORY TAB ==================== -->
+        <section id="history" class="tab-content">
+            <div class="history-container">
+                <h2>Verification History</h2>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <select id="filter-platform" class="filter-select">
+                        <option value="all">All Platforms</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <select id="filter-label" class="filter-select">
+                        <option value="all">All Results</option>
+                        <option value="fake">Fake Only</option>
+                    </select>
+
+                    <button id="refresh-history" class="btn btn-secondary">Refresh</button>
+                </div>
+
+                <!-- History Table -->
+                <table id="history-table" class="history-table">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Platform</th>
+                            <th>Result</th>
+                            <th>Confidence</th>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <tr>
+                            <td colspan="6" class="text-center">Loading history...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== REPORT MODAL ==================== -->
+    <div id="report-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Also report on the original platform?</h3>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>This profile looks suspicious based on our analysis.</p>
+                <p>For stronger action, you can also officially report this profile on Instagram/LinkedIn.</p>
+                <p class="modal-instructions">After you report there, click 'I have reported' to confirm.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-open-platform" class="btn btn-secondary">Open Platform Report Page</button>
+                <button id="btn-reported" class="btn btn-primary">I have reported</button>
+                <button id="btn-cancel-report" class="btn btn-ghost">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
