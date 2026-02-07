@@ -19,6 +19,7 @@
             <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
             <button class="tab-btn" data-tab="verify">Verify Profile</button>
             <button class="tab-btn" data-tab="history">History</button>
+            <button class="tab-btn" data-tab="report">Report</button>
         </nav>
 
         <!-- ==================== DASHBOARD TAB ==================== -->
@@ -185,6 +186,49 @@
         </section>
     </div>
 
+
+
+
+    <div id="reportTab" class="tab-content" style="display:none;">
+  <h2>Report</h2>
+  <p>Profile URL:</p>
+  <p id="reportProfileUrl" style="font-weight:600; word-break:break-all;"></p>
+
+  <button id="reportActionBtn" onclick="handleReportClick()">Report</button>
+
+  <p id="reportMessage" style="margin-top:10px; display:none;">
+    Report it to the actual platform. Waiting for your feedback...
+  </p>
+
+  <div id="reportFeedback" style="margin-top:10px; display:none;">
+    <p>Did you report?</p>
+    <button onclick="handleReportedYes()">Yes</button>
+    <button onclick="handleReportedNo()">No</button>
+  </div>
+
+  <p id="finalReportStatus" style="margin-top:10px; display:none;"></p>
+</div>
+<div id="reportTab" class="tab-content" style="display:none;">
+  <h2>Report</h2>
+  <p>Profile URL:</p>
+  <p id="reportProfileUrl" style="font-weight:600; word-break:break-all;"></p>
+
+  <button id="reportActionBtn" onclick="handleReportClick()">Report</button>
+
+  <p id="reportMessage" style="margin-top:10px; display:none;">
+    Report it to the actual platform. Waiting for your feedback...
+  </p>
+
+  <div id="reportFeedback" style="margin-top:10px; display:none;">
+    <p>Did you report?</p>
+    <button onclick="handleReportedYes()">Yes</button>
+    <button onclick="handleReportedNo()">No</button>
+  </div>
+
+  <p id="finalReportStatus" style="margin-top:10px; display:none;"></p>
+</div>
+
+
     <!-- ==================== REPORT MODAL ==================== -->
     <div id="report-modal" class="modal" style="display:none;">
         <div class="modal-content">
@@ -204,6 +248,47 @@
             </div>
         </div>
     </div>
+<script>
+  function showTab(tabId) {
+    // If you already have this function, just ensure it handles 'reportTab'.
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(t => t.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
+  }
+
+  // Called when user clicks "Report" button in History
+  function openReportTabWithUrl(url) {
+    // Set URL in Report tab
+    const urlElement = document.getElementById('reportProfileUrl');
+    urlElement.textContent = url;
+
+    // Reset state
+    document.getElementById('reportMessage').style.display = 'none';
+    document.getElementById('reportFeedback').style.display = 'none';
+    document.getElementById('finalReportStatus').style.display = 'none';
+
+    // Show Report tab
+    showTab('reportTab');
+  }
+
+  function handleReportClick() {
+    // Show message and feedback buttons
+    document.getElementById('reportMessage').style.display = 'block';
+    document.getElementById('reportFeedback').style.display = 'block';
+  }
+
+  function handleReportedYes() {
+    document.getElementById('finalReportStatus').textContent =
+      'Thank you. Your report has been noted.';
+    document.getElementById('finalReportStatus').style.display = 'block';
+  }
+
+  function handleReportedNo() {
+    document.getElementById('finalReportStatus').textContent =
+      'Please report this profile on the actual platform when you get a chance.';
+    document.getElementById('finalReportStatus').style.display = 'block';
+  }
+</script>
 
     <script src="script.js"></script>
 </body>
